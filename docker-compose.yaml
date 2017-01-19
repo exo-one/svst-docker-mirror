@@ -1,0 +1,78 @@
+version: '2.1'
+
+services:
+  bitcoind:
+    build: ./docker-bitcoind/
+    ports:
+      - "8333:8333"
+      - "18333:18333"
+      - "127.0.0.1:8332:8332"
+      - "127.0.0.1:18332:18332"
+    volumes:
+      - ./bitcoind-data:/bitcoin
+
+  ipfs:
+    depends_on: 
+      - "bitcoind"
+    image: "jbenet/go-ipfs"
+    ports:
+      - "127.0.0.1:5001:5001"
+      - "4001:4001"
+
+  postgres:
+    depends_on:
+      - "ipfs"
+    image: "postgres:9.6"
+    environment:
+      - PGDATA=/postgres-data
+    volumes:
+      - ./postgres-data:/postgres-data
+    expose:
+      - "5678"
+
+  # scraper:
+  #   depends_on:
+  #     - "postgres"
+  #   build:
+  #     context: ./svst-haskell
+  #     dockerfile: Scraper-Dockerfile
+  
+  # header-download:
+  #   depends_on:
+  #     - "postgres"
+  #   build:
+  #     context: ./svst-python
+  #     dockerfile: Header-Download-Dockerfile
+  #     args:
+  #       pubkey: ""
+  
+  # pallet-download:
+  #   depends_on:
+  #     - "bitcoind"
+  #   build:
+  #     context: ./svst-python
+  #     dockerfile: Pallet-Download-Dockerfile
+  
+  # verifier:
+  #   depends_on:
+  #     - "postgres"
+  #   build:
+  #     context: ./svst-haskell
+  #     dockerfile: Pallet-Verifier-Dockerfile
+  
+  # statemaker:
+  #   depends_on:
+  #     - "postgres"
+  #   build:
+  #     context: ./svst-python
+  #     dockerfile: Statemaker-Dockerfile
+
+  # voteexplorer:
+  #   depends_on:
+  #     - "statemaker"
+  #   build:
+  #     context: ./svst-python
+  #     dockerfile: VoteExplorer-Dockerfile
+  #   ports:
+  #     - "8080:80"
+
