@@ -2,7 +2,10 @@ version: '2.1'
 
 services:
   bitcoind:
-    build: ./docker-bitcoind/
+    build: 
+      context: ./docker-bitcoind/
+      args:
+        whichnet: "-testnet"
     ports:
       - "8333:8333"
       - "18333:18333"
