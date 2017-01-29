@@ -5,7 +5,7 @@ services:
     build: 
       context: ./docker-bitcoind/
       args:
-        whichnet: "-testnet"
+        whichnet: "-regtest" # do not start on main bitcoin network while testing
     ports:
       - "8333:8333"
       - "18333:18333"
@@ -21,6 +21,8 @@ services:
     ports:
       - "127.0.0.1:5001:5001"
       - "4001:4001"
+    volumes:
+      - ./ipfs-data:/ipfs-data
 
   postgres:
     depends_on:
@@ -33,14 +35,14 @@ services:
     expose:
       - "5678"
 
-  # scraper:
-  #   depends_on:
-  #     - "postgres"
-  #   build:
-  #     context: ./svst-haskell
-  #     dockerfile: Scraper-Dockerfile
+  scraper:  # haskell
+    depends_on:
+      - "postgres"
+    build:
+      context: ./dockerfiles/
+      dockerfile: Scraper-Dockerfile
   
-  # header-download:
+  # header-download:  # python
   #   depends_on:
   #     - "postgres"
   #   build:
@@ -49,28 +51,28 @@ services:
   #     args:
   #       pubkey: ""
   
-  # pallet-download:
+  # pallet-download:  # python
   #   depends_on:
   #     - "bitcoind"
   #   build:
   #     context: ./svst-python
   #     dockerfile: Pallet-Download-Dockerfile
   
-  # verifier:
+  # verifier:  # haskell
   #   depends_on:
   #     - "postgres"
   #   build:
-  #     context: ./svst-haskell
+  #     context: ./dockerfiles
   #     dockerfile: Pallet-Verifier-Dockerfile
   
-  # statemaker:
+  # statemaker:  # python
   #   depends_on:
   #     - "postgres"
   #   build:
   #     context: ./svst-python
   #     dockerfile: Statemaker-Dockerfile
 
-  # voteexplorer:
+  # voteexplorer:  # python
   #   depends_on:
   #     - "statemaker"
   #   build:

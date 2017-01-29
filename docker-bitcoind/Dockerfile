@@ -74,7 +74,7 @@ WORKDIR /bitcoin
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-ARG whichnet=-testnet
+ARG whichnet=""
 ENV WHICHNET ${whichnet}
 
 CMD ["sh", "-c", "btc_oneshot $WHICHNET"]
