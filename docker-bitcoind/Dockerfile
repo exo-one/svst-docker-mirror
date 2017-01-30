@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM exo1/dev-base-1:latest
 MAINTAINER Max Kaye <max@exo1.tech>
 
 ARG USER_ID
@@ -16,32 +16,16 @@ ENV GROUP_ID ${GROUP_ID:-1000}
 RUN groupadd -g ${GROUP_ID} bitcoin \
 	&& useradd -u ${USER_ID} -g bitcoin -s /bin/bash -m -d /bitcoin bitcoin
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8842ce5e && \
-    echo "deb http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu xenial main" > /etc/apt/sources.list.d/bitcoin.list
-
-
-RUN apt-get update
-RUN apt-get install -y \
-      wget git  \
-      build-essential libtool autotools-dev autoconf pkg-config libssl-dev \
-      libboost-all-dev libprotobuf-dev protobuf-compiler libevent-dev sudo nano bsdmainutils software-properties-common
-RUN add-apt-repository ppa:bitcoin/bitcoin
-RUN apt-get update \
-      && apt-get install -y libdb4.8-dev libdb4.8++-dev \
-      && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-
 # Install Bitcoind
 WORKDIR /root
 
-RUN git clone https://gitlab.com/exo-one/bitcoin-nulldata
+RUN git clone https://gitlab.com/exo-one/bitcoin-nulldata --depth=1
 
 ADD files/configure-bitcoin-nulldata.sh /root
 ADD files/build-bitcoin-nulldata.sh /root
 
 RUN /root/configure-bitcoin-nulldata.sh
 RUN /root/build-bitcoin-nulldata.sh
-
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -62,8 +46,10 @@ RUN wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/downloa
 		wget \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
 ADD ./bin /usr/local/bin
+
+# add here to prevent rebuilding image much
+RUN cd /root/bitcoin-nulldata && make clean
 
 VOLUME ["/bitcoin"]
 

@@ -1,4 +1,4 @@
-FROM exo-one:dev-base-1
+FROM exo1/dev-base-1:latest
 MAINTAINER Max Kaye <max@exo1.tech>
 
 WORKDIR ~/
