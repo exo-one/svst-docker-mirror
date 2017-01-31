@@ -16,6 +16,6 @@ RUN apt-get install -y \
 RUN add-apt-repository ppa:bitcoin/bitcoin
 RUN apt-get update \
       && apt-get install -y libdb4.8-dev libdb4.8++-dev \
-      && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+         postgresql-server-dev-9.5 libpq-dev 
 
 # Add stuff after this so we have a common image

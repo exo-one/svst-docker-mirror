@@ -1,4 +1,4 @@
-FROM exo1:dev-base-haskell
+FROM exo1/dev-base-haskell:latest
 
 # Add stuff after this so we have a common image
 
