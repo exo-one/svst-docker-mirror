@@ -39,8 +39,8 @@ services:
     depends_on:
       - "postgres"
     build:
-      context: ./dockerfiles/
-      dockerfile: Scraper-Dockerfile
+      context: ./dockerfiles/scraper/
+      dockerfile: Dockerfile
   
   # header-download:  # python
   #   depends_on:
