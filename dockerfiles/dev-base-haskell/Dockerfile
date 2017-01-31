@@ -7,10 +7,8 @@ RUN mkdir -p src && cd src \
 	&& cd svst-haskell
 
 RUN stack upgrade && mv ~/.local/bin/stack /usr/bin/stack
-RUN stack --version
 
 # build so we cache - lots of common elements so adding to dev base
 # means we only need to compile once
 RUN stack setup
 RUN cd src/svst-haskell && stack build
-

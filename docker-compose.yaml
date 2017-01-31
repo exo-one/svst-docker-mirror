@@ -4,8 +4,11 @@ services:
   bitcoind:
     build: 
       context: ./docker-bitcoind/
-      args:
-        whichnet: "-regtest" # do not start on main bitcoin network while testing
+    entrypoint: "sh -c 'btc_init && bitcoind -regtest'"
+    environment:
+      - DISABLEWALLET=0
+      - RPCUSER=bitcoinrpc
+      - RPCPASSWORD=YwdRRcTVR7auH0xWukWUd5qk77t2rxP6FKJlk1YL0YIM
     ports:
       - "8333:8333"
       - "18333:18333"
@@ -58,21 +61,21 @@ services:
   #     context: ./svst-python
   #     dockerfile: Pallet-Download-Dockerfile
   
-  # verifier:  # haskell
+  # pallet-verifier:  # haskell
   #   depends_on:
   #     - "postgres"
   #   build:
   #     context: ./dockerfiles
   #     dockerfile: Pallet-Verifier-Dockerfile
   
-  # statemaker:  # python
+  # state-maker:  # python
   #   depends_on:
   #     - "postgres"
   #   build:
   #     context: ./svst-python
   #     dockerfile: Statemaker-Dockerfile
 
-  # voteexplorer:  # python
+  # vote-explorer:  # python
   #   depends_on:
   #     - "statemaker"
   #   build:

@@ -15,6 +15,8 @@ disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
 rpcuser=${RPCUSER:-bitcoinrpc}
 rpcpassword=${RPCPASSWORD:-`dd if=/dev/urandom bs=33 count=1 2>/dev/null | base64`}
+rpcport=8332
+port=8333
 EOF
 
 fi
