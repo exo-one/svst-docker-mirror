@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   bitcoind:
-    build: 
+    build:
       context: ./docker-bitcoind/
     entrypoint: "sh -c 'btc_init && bitcoind -regtest'"
     environment:
@@ -18,7 +18,7 @@ services:
       - ./bitcoind-data:/bitcoin
 
   ipfs:
-    depends_on: 
+    depends_on:
       - "bitcoind"
     image: "jbenet/go-ipfs"
     ports:
@@ -44,7 +44,8 @@ services:
     build:
       context: ./dockerfiles/scraper/
       dockerfile: Dockerfile
-  
+    entrypoint: "scraper"
+
   # header-download:  # python
   #   depends_on:
   #     - "postgres"
@@ -53,21 +54,21 @@ services:
   #     dockerfile: Header-Download-Dockerfile
   #     args:
   #       pubkey: ""
-  
+
   # pallet-download:  # python
   #   depends_on:
   #     - "bitcoind"
   #   build:
   #     context: ./svst-python
   #     dockerfile: Pallet-Download-Dockerfile
-  
+
   # pallet-verifier:  # haskell
   #   depends_on:
   #     - "postgres"
   #   build:
   #     context: ./dockerfiles
   #     dockerfile: Pallet-Verifier-Dockerfile
-  
+
   # state-maker:  # python
   #   depends_on:
   #     - "postgres"
