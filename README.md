@@ -46,3 +46,18 @@ We use volumes to make the docker images able to be used through all stages of t
 ## Development
 
 Ideally you shouldn't need to touch `dev-base-1` or `dev-base-haskell`. For convenience the apt cache is left in, so if you need any extra dependencies you can just add `apt-get install -y whatever` to the front of the particular docker file.
+
+### Building Individual Images
+
+Upon occasion you will need to rebuild a single image after changes have been
+made upstream.
+
+You will need to supply docker-compose with the instruction to build, to not
+use the existing cached image as well as which image needs rebuilding:
+
+    % docker-compose build --no-cache image_name
+
+ie: rebuilding scraper:
+
+    % docker-compose build --no-cache scraper
+
