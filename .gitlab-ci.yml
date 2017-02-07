@@ -23,4 +23,4 @@ compose-test:
   script:
     - /usr/local/bin/docker-compose config
   tags:
-    - exo1
+    - docker
