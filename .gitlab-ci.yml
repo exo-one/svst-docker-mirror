@@ -1,0 +1,28 @@
+image: ubuntu:xenial
+
+before_script:
+  - apt update -qy
+  - apt-get -y install
+      curl
+      apt-transport-https
+      software-properties-common
+      ca-certificates
+      software-properties-common
+  - curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -
+  - add-apt-repository
+         "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
+  - apt update -qy
+  - apt-get -y install docker-engine
+  - curl -L "https://github.com/docker/compose/releases/download/1.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - service docker start
+
+stages:
+  - test
+
+compose-test:
+  stage: test
+  script:
+    - /usr/local/bin/docker-compose config
+  tags:
+    - docker
