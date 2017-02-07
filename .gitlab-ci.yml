@@ -1,3 +1,5 @@
+image: ubuntu:xenial
+
 before_script:
   - apt update -qy
   - apt-get -y install
