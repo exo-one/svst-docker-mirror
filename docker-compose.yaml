@@ -10,10 +10,9 @@ services:
       - RPCUSER=bitcoinrpc
       - RPCPASSWORD=YwdRRcTVR7auH0xWukWUd5qk77t2rxP6FKJlk1YL0YIM
     ports:
+      - "8332:8332"
       - "8333:8333"
       - "18333:18333"
-      - "127.0.0.1:8332:8332"
-      - "127.0.0.1:18332:18332"
     volumes:
       - ./bitcoind-data:/bitcoin
 
