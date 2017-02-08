@@ -8,9 +8,11 @@ before_script:
       software-properties-common
       ca-certificates
       software-properties-common
-  - curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -
+  - apt-key adv
+      --keyserver hkp://p80.pool.sks-keyservers.net:80
+      --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
   - add-apt-repository
-         "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
+      "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
   - apt update -qy
   - apt-get -y install docker-engine
   - curl -L "https://github.com/docker/compose/releases/download/1.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
