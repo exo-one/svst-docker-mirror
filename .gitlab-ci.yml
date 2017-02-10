@@ -28,5 +28,11 @@ compose-build:
   stage: build
   script:
     - docker-compose build
+    - docker-compose up -d
+    - docker-compose ps bitcoind
+    - docker-compose ps ipfs
+    - docker-compose ps postgres
+    - docker-compose ps scraper
+    - docker-compose down
   tags:
     - docker
