@@ -35,6 +35,6 @@ compose-build:
     - docker-compose ps scraper
     - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli generate 104
     - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli getbalance
-    - docker-compose down
+    - docker-compose up producer
   tags:
     - docker
