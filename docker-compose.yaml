@@ -45,6 +45,14 @@ services:
       dockerfile: Dockerfile
     entrypoint: "scraper"
 
+  producer:  # haskell
+    depends_on:
+      - "postgres"
+    build:
+      context: ./dockerfiles/producer/
+      dockerfile: Dockerfile
+    entrypoint: "pallet-gen 10"
+
   # header-download:  # python
   #   depends_on:
   #     - "postgres"
