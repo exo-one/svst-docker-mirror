@@ -53,6 +53,14 @@ services:
       dockerfile: Dockerfile
     entrypoint: "pallet-gen 10"
 
+  stress-test-pallet-verification:  # C
+    depends_on:
+      - "postgres"
+    build:
+      context: ./dockerfiles/stress-test-pallet-verification/
+      dockerfile: Dockerfile
+    entrypoint: "stress-test-pallet-verification/src/perf"
+
   # header-download:  # python
   #   depends_on:
   #     - "postgres"
