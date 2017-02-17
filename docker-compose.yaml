@@ -77,12 +77,13 @@ services:
   #     context: ./svst-python
   #     dockerfile: Pallet-Download-Dockerfile
 
-  # pallet-verifier:  # haskell
-  #   depends_on:
-  #     - "postgres"
-  #   build:
-  #     context: ./dockerfiles
-  #     dockerfile: Pallet-Verifier-Dockerfile
+  pallet-verifier:  # haskell
+    depends_on:
+      - "postgres"
+    build:
+      context: ./dockerfiles/pallet-verifier/
+      dockerfile: Dockerfile
+    entrypoint: "verifier"
 
   # state-maker:  # python
   #   depends_on:
