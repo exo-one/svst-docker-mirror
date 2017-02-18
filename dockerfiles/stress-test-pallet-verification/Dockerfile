@@ -5,5 +5,5 @@ FROM exo1/dev-base-haskell:latest
 WORKDIR /src/
 
 RUN git clone https://gitlab.com/exo-one/stress-test-pallet-verification.git
-RUN cd stress-test-pallet-verification/src && make perf
+RUN cd stress-test-pallet-verification/src && make && ./test
 RUN stress-test-pallet-verification/src/perf
