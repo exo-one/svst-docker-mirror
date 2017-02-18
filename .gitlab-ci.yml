@@ -13,9 +13,7 @@ before_script:
   - docker version
   - docker-compose version
 
-stages:
-  #- test
-  #- build
+stages:  # test and build removed for the moment
   - run-tests
 
 compose-test:
