@@ -7,38 +7,37 @@ services:
   - docker:dind
 
 before_script:
-  - apk add --update python py-pip python-dev bash &&
-      pip install docker-compose
+  - apk add --update python py-pip python-dev python3 bash &&
+      pip install docker-compose &&
+      pip3 install PyYAML
   - docker info
   - docker version
   - docker-compose version
 
 stages:
   - run-tests
-  - test
-  - build
 
-compose-test:
-  stage: test
-  script:
-    - docker-compose config
-  tags:
-    - docker
-
-compose-build:
-  stage: build
-  script:
-    - docker-compose build
-    - docker-compose up -d
-    - docker-compose ps bitcoind
-    - docker-compose ps ipfs
-    - docker-compose ps postgres
-    - docker-compose ps scraper
-    - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli generate 104
-    - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli getbalance
-    - docker-compose up producer
-  tags:
-    - docker
+#compose-test:
+#  stage: test
+#  script:
+#    - docker-compose config
+#  tags:
+#    - docker
+#
+#compose-build:
+#  stage: build
+#  script:
+#    - docker-compose build
+#    - docker-compose up -d
+#    - docker-compose ps bitcoind
+#    - docker-compose ps ipfs
+#    - docker-compose ps postgres
+#    - docker-compose ps scraper
+#    - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli generate 104
+#    - docker exec -i svstdocker_bitcoind_1 /usr/local/bin/bitcoin-cli getbalance
+#    - docker-compose up producer
+#  tags:
+#    - docker
 
 compose-run-tests:
   stage: run-tests

@@ -1,10 +1,16 @@
+# When adding things that need to be changed for testing, remember
+# to update bin/2_modify_docker_test.py
+#
+# e.g. running bitcoind in regtest mode
+#      or adding environment variables
+
 version: '2.1'
 
 services:
   bitcoind:
     build:
       context: ./docker-bitcoind/
-    entrypoint: "sh -c 'btc_init && bitcoind -regtest'"
+    entrypoint: "sh -c 'btc_init && bitcoind'"
     env_file: env_vars.env
     ports:
       - "8332:8332"
@@ -56,8 +62,7 @@ services:
     build:
       context: ./dockerfiles/header-download/
       dockerfile: Dockerfile
-      args:
-        pubkey: ""
+      env_file: env_vars.env
 
   pallet-download:  # python
     depends_on:
