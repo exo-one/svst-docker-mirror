@@ -13,8 +13,10 @@ before_script:
   - docker version
   - docker-compose version
 
-stages:  # test and build removed for the moment
+stages:
   - run-tests
+  - test
+  - build
 
 compose-test:
   stage: test
@@ -43,4 +45,4 @@ compose-run-tests:
   script:
     - bin/regen-docker-test.sh
     - docker-compose -f docker-compose.test.yml -p ci up --build -d
-    - docker wait  ci_sut_1
+    - docker wait ci_sut_1
