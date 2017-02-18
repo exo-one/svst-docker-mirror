@@ -53,29 +53,30 @@ services:
       dockerfile: Dockerfile
     entrypoint: "pallet-gen 10"
 
-  stress-test-pallet-verification:  # C
+#  NB: `verify-pallet` isn't run in its own conatiner; should be compiled in the containers where it's needed.
+#  stress-test-pallet-verification:  # C
+#    depends_on:
+#      - "postgres"
+#    build:
+#      context: ./dockerfiles/stress-test-pallet-verification/
+#      dockerfile: Dockerfile
+#    entrypoint: "stress-test-pallet-verification/src/perf"
+
+  header-download:  # python
     depends_on:
       - "postgres"
     build:
-      context: ./dockerfiles/stress-test-pallet-verification/
+      context: ./dockerfiles/header-download/
       dockerfile: Dockerfile
-    entrypoint: "stress-test-pallet-verification/src/perf"
+      args:
+        pubkey: ""
 
-  # header-download:  # python
-  #   depends_on:
-  #     - "postgres"
-  #   build:
-  #     context: ./svst-python
-  #     dockerfile: Header-Download-Dockerfile
-  #     args:
-  #       pubkey: ""
-
-  # pallet-download:  # python
-  #   depends_on:
-  #     - "bitcoind"
-  #   build:
-  #     context: ./svst-python
-  #     dockerfile: Pallet-Download-Dockerfile
+  pallet-download:  # python
+    depends_on:
+      - "bitcoind"
+    build:
+      context: ./dockerfiles/pallet-download/
+      dockerfile: Dockerfile
 
   pallet-verifier:  # haskell
     depends_on:
@@ -85,19 +86,19 @@ services:
       dockerfile: Dockerfile
     entrypoint: "verifier"
 
-  # state-maker:  # python
-  #   depends_on:
-  #     - "postgres"
-  #   build:
-  #     context: ./svst-python
-  #     dockerfile: Statemaker-Dockerfile
+  state-maker:  # python
+    depends_on:
+      - "postgres"
+    build:
+      context: ./dockerfiles/state-maker/
+      dockerfile: Dockerfile
 
-  # vote-explorer:  # python
-  #   depends_on:
-  #     - "statemaker"
-  #   build:
-  #     context: ./svst-python
-  #     dockerfile: VoteExplorer-Dockerfile
-  #   ports:
-  #     - "8080:80"
+  vote-explorer:  # python
+    depends_on:
+      - "state-maker"
+    build:
+      context: ./dockerfiles/vote-explorer/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
 
