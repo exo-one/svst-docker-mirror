@@ -1,4 +1,4 @@
-image: ubuntu:xenial
+image: docker:latest
 
 variables:
   DOCKER_DRIVER: overlay
@@ -7,7 +7,7 @@ services:
   - docker:dind
 
 before_script:
-  - apk add --update python py-pip python-dev &&
+  - apk add --update python py-pip python-dev bash &&
       pip install docker-compose
   - docker info
   - docker version
