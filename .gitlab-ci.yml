@@ -1,4 +1,4 @@
-image: ubunut:xenial
+image: ubuntu:xenial
 
 variables:
   DOCKER_DRIVER: overlay
