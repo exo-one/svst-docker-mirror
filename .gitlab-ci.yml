@@ -16,6 +16,7 @@ before_script:
 stages:
   - test
   - build
+  - run-tests
 
 compose-test:
   stage: test
@@ -38,3 +39,10 @@ compose-build:
     - docker-compose up producer
   tags:
     - docker
+
+compose-run-tests:
+  stage: run-tests
+  script:
+    - bin/regen-docker-test.sh
+    - docker-compose -f docker-compose.test.yml -p ci up --build -d
+    - docker wait  ci_sut_1

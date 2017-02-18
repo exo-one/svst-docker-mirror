@@ -63,3 +63,8 @@ ie: rebuilding scraper:
 
     % docker-compose build --no-cache scraper
 
+### Testing
+
+Testing done through `docker-compose`'s testing framework.
+
+See `.gitlab-ci.yml` for latest testing entrypoint and setup (in `run-tests`)
