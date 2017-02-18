@@ -62,7 +62,7 @@ services:
     build:
       context: ./dockerfiles/header-download/
       dockerfile: Dockerfile
-      env_file: env_vars.env
+    env_file: env_vars.env
 
   pallet-download:  # python
     depends_on:
