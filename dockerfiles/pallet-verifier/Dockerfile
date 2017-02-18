@@ -7,3 +7,11 @@ WORKDIR /src/svst-haskell
 RUN git pull
 RUN stack build
 RUN stack install && mv ~/.local/bin/* /usr/bin/
+
+WORKDIR /src
+
+RUN git pull https://gitlab.com/exo-one/stress-test-pallet-verification \
+    && cd stress-test-pallet-verification/src \
+    && make && test && cp verify-pallet /usr/bin/
+
+
