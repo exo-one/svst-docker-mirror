@@ -19,13 +19,13 @@ RUN groupadd -g ${GROUP_ID} bitcoin \
 # Install Bitcoind
 WORKDIR /root
 
-RUN git clone https://gitlab.com/exo-one/bitcoin-nulldata --depth=1
-
 ADD files/configure-bitcoin-nulldata.sh /root
 ADD files/build-bitcoin-nulldata.sh /root
 
-RUN /root/configure-bitcoin-nulldata.sh
-RUN /root/build-bitcoin-nulldata.sh
+RUN git clone https://gitlab.com/exo-one/bitcoin-nulldata --depth=1 \
+    && /root/configure-bitcoin-nulldata.sh \
+    && /root/build-bitcoin-nulldata.sh \
+    && rm -r /root/bitcoin-nulldata
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
