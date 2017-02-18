@@ -2,6 +2,8 @@
 
 This respository manages all docker files for the Secure Vote Stress Test
 
+You will need a new version of `docker-compose` and `docker`.
+
 ## I just want to run it!
 
 Run `docker-compose up --build` from this directory.
