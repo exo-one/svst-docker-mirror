@@ -12,9 +12,15 @@ cat docker-compose.yml >> $TESTFILE
 cat <<EOF >> $TESTFILE
 
   sut:  # tests
+    depends_on:
+      - "bitcoind"
+      - "postgres"
+      - "scraper"
+      - "state-maker"
     build:
       context: .
       dockerfile: Dockerfile.test
+    env_file: env_vars.env
 EOF
 
 python3 ./bin/2_modify_docker_test.py

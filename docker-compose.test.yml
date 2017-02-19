@@ -8,7 +8,7 @@ services:
     ports: ['8332:8332', '8333:8333', '18333:18333']
   header-download:
     build: {context: ./dockerfiles/header-download/, dockerfile: Dockerfile}
-    depends_on: [postgres]
+    depends_on: [scraper]
     env_file: env_vars.env
   ipfs:
     depends_on: [bitcoind]
@@ -16,31 +16,34 @@ services:
     ports: ['127.0.0.1:5001:5001', '4001:4001']
   pallet-download:
     build: {context: ./dockerfiles/pallet-download/, dockerfile: Dockerfile}
-    depends_on: [bitcoind]
+    depends_on: [scraper]
   pallet-verifier:
     build: {context: ./dockerfiles/pallet-verifier/, dockerfile: Dockerfile}
-    depends_on: [postgres]
+    depends_on: [scraper]
     entrypoint: verifier
   postgres:
+    build: {context: ./dockerfiles/postgres/}
     depends_on: [ipfs]
+    entrypoint: postgres
     environment: [PGDATA=/postgres-data]
     expose: ['5678']
-    image: postgres:9.6
   producer:
     build: {context: ./dockerfiles/producer/, dockerfile: Dockerfile}
-    depends_on: [postgres]
+    depends_on: [scraper]
     entrypoint: sh -c 'git pull && ./producer-production.sh'
     env_file: [env_vars.env]
     environment: [VERIFY_SECRET_KEY]
   scraper:
     build: {context: ./dockerfiles/scraper/, dockerfile: Dockerfile}
     depends_on: [postgres]
-    entrypoint: scraper
+    entrypoint: sh -c 'ls /scripts && /scripts/start-postgres.sh'
   state-maker:
     build: {context: ./dockerfiles/state-maker/, dockerfile: Dockerfile}
-    depends_on: [postgres]
+    depends_on: [scraper]
   sut:
     build: {context: ., dockerfile: Dockerfile.test}
+    depends_on: [bitcoind, postgres, scraper, state-maker]
+    env_file: env_vars.env
   vote-explorer:
     build: {context: ./dockerfiles/vote-explorer/, dockerfile: Dockerfile}
     depends_on: [state-maker]

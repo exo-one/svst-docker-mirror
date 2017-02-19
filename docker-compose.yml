@@ -32,13 +32,15 @@ services:
   postgres:
     depends_on:
       - "ipfs"
-    image: "postgres:9.6"
+    build:
+      context: './dockerfiles/postgres/'
     environment:
       - PGDATA=/postgres-data
     volumes:
       - ./postgres-data:/postgres-data
     expose:
       - "5678"
+    entrypoint: "/scripts/start-postgres.sh"
 
   scraper:  # haskell
     depends_on:
@@ -50,7 +52,7 @@ services:
 
   producer:  # haskell & python
     depends_on:
-      - "postgres"
+      - "scraper"
     build:
       context: ./dockerfiles/producer/
       dockerfile: Dockerfile
@@ -62,7 +64,7 @@ services:
 
   header-download:  # python
     depends_on:
-      - "postgres"
+      - "scraper"
     build:
       context: ./dockerfiles/header-download/
       dockerfile: Dockerfile
@@ -70,14 +72,14 @@ services:
 
   pallet-download:  # python
     depends_on:
-      - "bitcoind"
+      - "scraper"
     build:
       context: ./dockerfiles/pallet-download/
       dockerfile: Dockerfile
 
   pallet-verifier:  # haskell
     depends_on:
-      - "postgres"
+      - "scraper"
     build:
       context: ./dockerfiles/pallet-verifier/
       dockerfile: Dockerfile
@@ -85,7 +87,7 @@ services:
 
   state-maker:  # python
     depends_on:
-      - "postgres"
+      - "scraper"
     build:
       context: ./dockerfiles/state-maker/
       dockerfile: Dockerfile

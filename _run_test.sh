@@ -2,7 +2,15 @@
 
 set -e
 
+export SECRET_VERIFY_KEY=1234567890123456789012345678901234567890123456789012345678901234
+export VERIFY_PUBKEY=1234567890123456789012345678901234567890123456789012345678901234
+export RESETDB=1
+
 ./bin/regen-docker-test.sh
-docker-compose -f docker-compose.test.yml build --no-cache producer scraper header-download pallet-download pallet-verifier state-maker vote-explorer
+docker-compose -f docker-compose.test.yml -p ci build --no-cache sut
 docker-compose -f docker-compose.test.yml -p ci up --build -d
-docker wait ci_sut_1
+docker logs -f ci_sut_1
+goodtest=$(docker wait ci_sut_1)
+docker-compose -f docker-compose.test.yml -p ci down
+echo "$goodtest"
+exit "$goodtest"
