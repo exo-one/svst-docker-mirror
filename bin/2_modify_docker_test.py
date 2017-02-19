@@ -12,7 +12,6 @@ del docker_test['services']['bitcoind']['volumes']
 
 del docker_test['services']['bitcoind']['build']
 docker_test['services']['bitcoind']['image'] = "exo1/dev-test-bitcoind"
-
 docker_test['services']['bitcoind']['entrypoint'] = "sh -c 'btc_init && bitcoind -regtest'"
 
 with open(docker_test_filename, 'w') as f:

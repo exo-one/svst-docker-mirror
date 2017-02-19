@@ -48,9 +48,6 @@ RUN wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/downloa
 
 ADD ./bin /usr/local/bin
 
-# add here to prevent rebuilding image much
-RUN cd /root/bitcoin-nulldata && make clean
-
 VOLUME ["/bitcoin"]
 
 EXPOSE 8332 8333 18332 18333

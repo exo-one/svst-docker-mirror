@@ -6,7 +6,7 @@ You will need a new version of `docker-compose` and `docker`.
 
 ## I just want to run it!
 
-Run `docker-compose up --build` from this directory.
+Run `1_auditor.sh` from this directory. (For a producer run `1_producer.sh`)
 
 ## Base Images
 
@@ -15,6 +15,7 @@ There are some base images
 * `dev-base-1` - this is the general base image, meant to include as many dev resources as possible
 * `dev-base-haskell` - this is the base image for Haskell utils, based on dev-base-1. It has an out of date version of `svst-haskell`, however, stack has been upgraded and most libraries have cached prebuilt versions, so it's much faster to build on top of (rather than recompiling the same files over and over)
 * `dev-base-python` - this is like the haskell image above and also based on dev-base-1. Since python doesn't need to compile much and a pip install is fast it is just an interim layer for convenience
+* `dev-test-bitcoind` - a testing image used to skip over compiling bitcoind; not to be used in production
 
 ## Microservice images
 

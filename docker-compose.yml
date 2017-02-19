@@ -48,13 +48,16 @@ services:
       dockerfile: Dockerfile
     entrypoint: "scraper"
 
-  producer:  # haskell
+  producer:  # haskell & python
     depends_on:
       - "postgres"
     build:
       context: ./dockerfiles/producer/
       dockerfile: Dockerfile
-    entrypoint: "pallet-gen 10"
+    entrypoint: "./producer-production.sh"
+    env_file:
+      - env_vars.env
+      - /secrets.env
 
   header-download:  # python
     depends_on:
