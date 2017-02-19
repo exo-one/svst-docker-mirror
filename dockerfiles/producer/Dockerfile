@@ -10,7 +10,7 @@ RUN stack install && mv ~/.local/bin/* /usr/bin/
 
 WORKDIR /src
 
-RUN git pull https://gitlab.com/exo-one/svst-python --depth=1
+RUN git clone https://gitlab.com/exo-one/svst-python.git --depth=1
 
 WORKDIR /src/svst-python
 

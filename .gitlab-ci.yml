@@ -42,9 +42,4 @@ stages:
 compose-run-tests:
   stage: run-tests
   script:
-    - ls -al
-    - pwd
-    - ls -al bin
-    - bash bin/regen-docker-test.sh
-    - docker-compose -f docker-compose.test.yml -p ci up --build -d
-    - docker wait ci_sut_1
+    - ./_run_test.sh
