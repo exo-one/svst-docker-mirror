@@ -16,7 +16,7 @@ docker-compose -f docker-compose.test.yml -p ci up --build &  # don't use -d for
 until [[ ! -z $(get_sut_container_id) ]]; do
     echo "### waiting for SUT ..."
     echo $(get_sut_container_id)
-    sleep 1
+    sleep 10
 done
 echo "$$$ SUT UP... executing docker wait"
 

@@ -27,7 +27,12 @@ fi
 
 echo "Bitcoin environment variables:"
 env
-
+echo
+echo "Bitcoin IP info"
+ifconfig -a
+echo
+echo "Bitcoin bitcoin.conf"
 cat $HOME/.bitcoin/bitcoin.conf
 
-echo "Initialization completed successfully"
+echo
+echo "Bitcoin Initialization completed successfully"
