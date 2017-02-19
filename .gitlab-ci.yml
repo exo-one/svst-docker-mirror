@@ -42,4 +42,6 @@ stages:
 compose-run-tests:
   stage: run-tests
   script:
+    - env
+    - ./_reset_tests.sh
     - ./_run_test.sh -d
