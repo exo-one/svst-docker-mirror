@@ -18,6 +18,7 @@ docker_test['services']['producer']['entrypoint'] = "sh -c 'git pull && ./produc
 
 docker_test['services']['sut']['env_file'].append("env_test.env")
 docker_test['services']['producer']['env_file'].append("env_test.env")
+docker_test['services']['header-download']['env_file'].append("env_test.env")
 
 with open(docker_test_filename, 'w') as f:
     yaml.dump(docker_test, f)

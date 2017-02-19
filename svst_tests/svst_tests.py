@@ -30,6 +30,7 @@ magic_bytes = os.getenv('MAGICBYTES')
 dbname = os.getenv('POSTGRES_DB')
 dbhost = os.getenv('POSTGRES_HOST')
 NUM_PALLETS = int(os.getenv('NUM_PALLETS', 20))
+fancy_log("Environment Variables", {k: os.getenv(k) for k in os.environ.keys()})
 
 
 while True:  # continuously attempt to do this until they are up
