@@ -10,8 +10,8 @@ del docker_test['services']['postgres']['volumes']
 del docker_test['services']['ipfs']['volumes']
 del docker_test['services']['bitcoind']['volumes']
 
-del docker_test['services']['bitcoind']['build']
-docker_test['services']['bitcoind']['image'] = "exo1/dev-test-bitcoind"
+# del docker_test['services']['bitcoind']['build']
+# docker_test['services']['bitcoind']['image'] = "exo1/dev-test-bitcoind"
 docker_test['services']['bitcoind']['entrypoint'] = "sh -c 'btc_init && bitcoind -regtest'"
 
 docker_test['services']['producer']['entrypoint'] = "sh -c 'git pull && ./producer-test.sh'"
