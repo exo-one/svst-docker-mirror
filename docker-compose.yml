@@ -57,7 +57,8 @@ services:
     entrypoint: "./producer-production.sh"
     env_file:
       - env_vars.env
-      - /secrets.env
+    environment:
+      - VERIFY_SECRET_KEY
 
   header-download:  # python
     depends_on:
