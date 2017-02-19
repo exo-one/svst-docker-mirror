@@ -4,6 +4,7 @@ services:
   bitcoind:
     entrypoint: sh -c 'btc_init && bitcoind -regtest'
     env_file: [env_vars.env]
+    expose: ['8332']
     image: exo1/dev-test-bitcoind
   header-download:
     build: {context: ./dockerfiles/header-download/, dockerfile: Dockerfile}

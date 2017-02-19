@@ -69,7 +69,8 @@ def do_test_round():
     global last_scrape_n
     # first confirm everything and generate coins
     bitcoind.generate(128)
-    fancy_log("Bitcoin Getinfo", bitcoind.getinfo())
+    getinfo = bitcoind.getinfo()
+    fancy_log("Limited Bitcoin Getinfo", {'blocks': getinfo['blocks'], 'balance': getinfo['balance']})
 
     # wait for scraper to register some things
     all_scrapes = run_query("SELECT * FROM null_data")
