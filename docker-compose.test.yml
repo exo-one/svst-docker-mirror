@@ -19,7 +19,6 @@ services:
   pallet-verifier:
     build: {context: ./dockerfiles/pallet-verifier/, dockerfile: Dockerfile}
     depends_on: [scraper]
-    entrypoint: verifier
   postgres:
     build: {context: ./dockerfiles/postgres/}
     depends_on: [ipfs]

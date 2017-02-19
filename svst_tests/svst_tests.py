@@ -2,13 +2,13 @@ import logging
 
 import datetime
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 import time
 import json
 import socket
 import sys, os
-from pprint import pprint
+from pprint import pformat
 
 import psycopg2
 
@@ -17,13 +17,13 @@ from bitcoinrpc.authproxy import AuthServiceProxy, EncodeDecimal, JSONRPCExcepti
 
 
 def fancy_log(title, thing):
-    print()
-    print("########" * 2 + "#" * len(title))
-    print("####### %s #######" % title)
-    print("########" * 2 + "#" * len(title))
-    print()
-    pprint(thing, indent=2)
-    print()
+    logging.info("")
+    logging.info("########" * 2 + "#" * len(title))
+    logging.info("####### %s #######" % title)
+    logging.info("########" * 2 + "#" * len(title))
+    logging.info("")
+    logging.info(pformat(thing, indent=2))
+    logging.info("")
 
 
 magic_bytes = os.getenv('MAGICBYTES')
