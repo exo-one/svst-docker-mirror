@@ -1,4 +1,4 @@
-FROM exo1/dev-base-haskell:latest
+FROM exo1/dev-base-python:latest
 
 # Add stuff after this so we have a common image
 
@@ -8,10 +8,6 @@ RUN git pull
 RUN stack build
 RUN stack install && mv ~/.local/bin/* /usr/bin/
 
-WORKDIR /src
-
-RUN git clone https://gitlab.com/exo-one/svst-python.git --depth=1
-
 WORKDIR /src/svst-python
 
-RUN apt-get install -y python3-pip && pip3 install -r requirements.txt
+RUN git pull && pip3 install -r requirements.txt

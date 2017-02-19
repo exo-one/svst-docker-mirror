@@ -29,7 +29,7 @@ services:
   producer:
     build: {context: ./dockerfiles/producer/, dockerfile: Dockerfile}
     depends_on: [postgres]
-    entrypoint: ./producer-production.sh
+    entrypoint: sh -c 'git pull && ./producer-production.sh'
     env_file: [env_vars.env]
     environment: [VERIFY_SECRET_KEY]
   scraper:
