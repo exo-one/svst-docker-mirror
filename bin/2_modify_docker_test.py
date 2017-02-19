@@ -16,9 +16,9 @@ docker_test['services']['bitcoind']['entrypoint'] = "sh -c 'btc_init && bitcoind
 
 docker_test['services']['producer']['entrypoint'] = "sh -c 'git pull && ./producer-test.sh'"
 
-docker_test['services']['sut']['env_file'].append("env_test.env")
-docker_test['services']['producer']['env_file'].append("env_test.env")
-docker_test['services']['header-download']['env_file'].append("env_test.env")
+for service in docker_test['services']:
+    if 'env_file' in service:
+        service['env_file'].append("env_test.env")
 
 with open(docker_test_filename, 'w') as f:
     yaml.dump(docker_test, f)

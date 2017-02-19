@@ -18,6 +18,9 @@ rpcpassword=${RPCPASSWORD:-`dd if=/dev/urandom bs=33 count=1 2>/dev/null | base6
 rpcallowip=172.18.0.0/16
 rpcport=8332
 port=8333
+txindex=1
+server=1
+dbcache=2048
 EOF
 
 fi
