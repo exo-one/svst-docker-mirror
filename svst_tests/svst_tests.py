@@ -40,7 +40,7 @@ while True:  # continuously attempt to do this until they are up
         try:
             bitcoind = AuthServiceProxy("http://%s:%s@bitcoind:8332" % (rpcuser, rpcpassword))
             bitcoind.getinfo()  # try to connect in some way
-        except socket.gaierror:
+        except socket.gaierror:  # Just DNS!
             logging.info("Trying localhost...")
             bitcoind = AuthServiceProxy("http://%s:%s@127.0.0.1:8332" % (rpcuser, rpcpassword))
             bitcoind.getinfo()

@@ -44,4 +44,4 @@ compose-run-tests:
   script:
     - env
     - ./_reset_tests.sh
-    - ./_run_test.sh -d
+    - ./_run_test.sh
