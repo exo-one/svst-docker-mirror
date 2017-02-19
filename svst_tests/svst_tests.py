@@ -30,16 +30,19 @@ magic_bytes = os.getenv('MAGICBYTES')
 dbname = os.getenv('POSTGRES_DB')
 dbhost = os.getenv('POSTGRES_HOST')
 NUM_PALLETS = int(os.getenv('NUM_PALLETS', 20))
+rpcuser = os.getenv('RPCUSER')
+rpcpassword = os.getenv('RPCPASSWORD')
 fancy_log("Environment Variables", {k: os.getenv(k) for k in os.environ.keys()})
 
 
 while True:  # continuously attempt to do this until they are up
     try:
         try:
-            bitcoind = AuthServiceProxy("http://%s:%s@bitcoind:8332" % (os.getenv('RPCUSER'), os.getenv('RPCPASSWORD')))
+            bitcoind = AuthServiceProxy("http://%s:%s@bitcoind:8332" % (rpcuser, rpcpassword))
             bitcoind.getinfo()  # try to connect in some way
         except socket.gaierror:
-            bitcoind = AuthServiceProxy("http://%s:%s@127.0.0.1:8332" % (os.getenv('RPCUSER'), os.getenv('RPCPASSWORD')))
+            logging.info("Trying localhost...")
+            bitcoind = AuthServiceProxy("http://%s:%s@127.0.0.1:8332" % (rpcuser, rpcpassword))
             bitcoind.getinfo()
 
         dbhost_ip = socket.gethostbyname(dbhost)
@@ -47,7 +50,8 @@ while True:  # continuously attempt to do this until they are up
                                    user=os.getenv('POSTGRES_USER'))
 
     except (socket.gaierror, JSONRPCException, psycopg2.OperationalError) as e:
-        logging.info("Sleeping 5; Unable to connect to Bitcoind or Postgres: %s" % e)
+        logging.info("Bitcoind auth: %s, %s" % (rpcuser, rpcpassword))
+        logging.info("SVST Test Sleeping 5; Unable to connect to Bitcoind or Postgres: %s" % e)
         time.sleep(5)
     else:
         break

@@ -9,6 +9,7 @@ export RESETDB=1
 ./bin/regen-docker-test.sh
 docker-compose -f docker-compose.test.yml -p ci build --no-cache sut
 docker-compose -f docker-compose.test.yml -p ci up --build $@
+docker logs -f ci_bitcoind_1 &
 docker logs -f ci_sut_1
 goodtest=$(docker wait ci_sut_1)
 
