@@ -3,17 +3,16 @@
 services:
   bitcoind:
     entrypoint: sh -c 'btc_init && bitcoind -regtest'
-    env_file: env_vars.env
+    env_file: [env_vars.env]
     image: exo1/dev-test-bitcoind
-    ports: ['8332:8332', '8333:8333', '18333:18333']
   header-download:
     build: {context: ./dockerfiles/header-download/, dockerfile: Dockerfile}
     depends_on: [scraper]
-    env_file: env_vars.env
+    env_file: [env_vars.env]
   ipfs:
     depends_on: [bitcoind]
     image: jbenet/go-ipfs
-    ports: ['127.0.0.1:5001:5001', '4001:4001']
+    ports: ['4001:4001']
   pallet-download:
     build: {context: ./dockerfiles/pallet-download/, dockerfile: Dockerfile}
     depends_on: [scraper]
@@ -24,28 +23,26 @@ services:
   postgres:
     build: {context: ./dockerfiles/postgres/}
     depends_on: [ipfs]
-    entrypoint: postgres
-    environment: [PGDATA=/postgres-data]
-    expose: ['5678']
+    env_file: [env_vars.env]
   producer:
     build: {context: ./dockerfiles/producer/, dockerfile: Dockerfile}
     depends_on: [scraper]
-    entrypoint: sh -c 'git pull && ./producer-production.sh'
-    env_file: [env_vars.env]
-    environment: [VERIFY_SECRET_KEY]
+    entrypoint: sh -c 'git pull && ./producer-test.sh'
+    env_file: [env_vars.env, env_test.env]
+    environment: [VERIFY_SECRET_KEY, VERIFY_PUBKEY]
   scraper:
     build: {context: ./dockerfiles/scraper/, dockerfile: Dockerfile}
     depends_on: [postgres]
-    entrypoint: sh -c 'ls /scripts && /scripts/start-postgres.sh'
+    entrypoint: scraper
   state-maker:
     build: {context: ./dockerfiles/state-maker/, dockerfile: Dockerfile}
     depends_on: [scraper]
   sut:
     build: {context: ., dockerfile: Dockerfile.test}
     depends_on: [bitcoind, postgres, scraper, state-maker]
-    env_file: env_vars.env
+    env_file: [env_vars.env, env_test.env]
   vote-explorer:
     build: {context: ./dockerfiles/vote-explorer/, dockerfile: Dockerfile}
     depends_on: [state-maker]
-    ports: ['8080:80']
+    ports: ['127.0.0.1:8080:80']
 version: '2.1'

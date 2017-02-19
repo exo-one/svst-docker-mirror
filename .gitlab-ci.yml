@@ -42,4 +42,4 @@ stages:
 compose-run-tests:
   stage: run-tests
   script:
-    - ./_run_test.sh
+    - ./_run_test.sh -d

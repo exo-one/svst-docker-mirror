@@ -8,6 +8,7 @@ import time
 import json
 import socket
 import sys, os
+from pprint import pprint
 
 import psycopg2
 
@@ -16,19 +17,19 @@ from bitcoinrpc.authproxy import AuthServiceProxy, EncodeDecimal, JSONRPCExcepti
 
 
 def fancy_log(title, thing):
-    to_print = thing
-    if type(thing) is dict:
-        to_print = json.dumps(thing, indent=2, default=EncodeDecimal)
-    elif type(thing) is not str:
-        to_print = repr(thing)
-
     print()
     print("########" * 2 + "#" * len(title))
     print("####### %s #######" % title)
     print("########" * 2 + "#" * len(title))
     print()
-    print(to_print)
+    pprint(thing, indent=2)
     print()
+
+
+magic_bytes = os.getenv('MAGICBYTES')
+dbname = os.getenv('POSTGRES_DB')
+dbhost = os.getenv('POSTGRES_HOST')
+NUM_PALLETS = int(os.getenv('NUM_PALLETS', 20))
 
 
 while True:  # continuously attempt to do this until they are up
@@ -39,37 +40,57 @@ while True:  # continuously attempt to do this until they are up
         except socket.gaierror:
             bitcoind = AuthServiceProxy("http://%s:%s@127.0.0.1:8332" % (os.getenv('RPCUSER'), os.getenv('RPCPASSWORD')))
             bitcoind.getinfo()
-    except (socket.gaierror, JSONRPCException) as e:
-        logging.info("Sleeping 5; Unable to connect to Bitcoind or IPFS: %s" % e)
+
+        dbhost_ip = socket.gethostbyname(dbhost)
+        sqlconn = psycopg2.connect(database=dbname, host=dbhost_ip,
+                                   user=os.getenv('POSTGRES_USER'))
+
+    except (socket.gaierror, JSONRPCException, psycopg2.OperationalError) as e:
+        logging.info("Sleeping 5; Unable to connect to Bitcoind or Postgres: %s" % e)
         time.sleep(5)
     else:
         break
 
 
-dbname = os.getenv('SQLDBNAME')
-sqlconn = psycopg2.connect(database=dbname, host=os.getenv('SQLHOST'),
-                           user=os.getenv('SQLUSER'), password=os.getenv('SQLPASSWORD'))
-
-
 def run_query(sql_query):
     cur = sqlconn.cursor()
     cur.execute(sql_query)
-    return cur.fetchall()
+    rows = [[a if type(a) is not memoryview else bytes(a) for a in row] for row in cur.fetchall()]
+    return list(rows)
 
 
+last_scrape_n = 0
 def do_test_round():
-    fancy_log("Round Start", {'time': time.time(), 'date': repr(datetime.datetime.now())})
+    global last_scrape_n
     # first confirm everything and generate coins
     bitcoind.generate(128)
     fancy_log("Bitcoin Getinfo", bitcoind.getinfo())
 
     # wait for scraper to register some things
+    all_scrapes = run_query("SELECT * FROM null_data")
+    fancy_log("Last Scrape", [] if len(all_scrapes) == 0 else all_scrapes[-1])
+    assert len(all_scrapes) >= last_scrape_n
+    last_scrape_n = len(all_scrapes)
+    for id, prefix, txid, nd, ht, btime, bhash in all_scrapes:
+        assert nd[:len(magic_bytes)] == magic_bytes.encode()
+        assert len(nd) == 40
+
+    # now check pallet header download
 
 
 
-ROUND_TIME_SEC = 3
-for round_n in range(100):
+
+
+ROUND_TIME_SEC = 2.0
+NUM_ROUNDS = max(NUM_PALLETS * 3, 20)
+for round_n in range(NUM_ROUNDS):
     r_start = time.time()
+    fancy_log("Round %d / %d" % (round_n + 1, NUM_ROUNDS), {'time': time.time(), 'date': repr(datetime.datetime.now())})
     do_test_round()
     time.sleep(max(ROUND_TIME_SEC - time.time() + r_start, 0))
+
+    if last_scrape_n == NUM_PALLETS:
+        break
+
+assert last_scrape_n == NUM_PALLETS
 

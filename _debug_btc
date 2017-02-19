@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec `docker ps | grep bitcoin | cut -d ' ' -f 1` bitcoin-cli $@

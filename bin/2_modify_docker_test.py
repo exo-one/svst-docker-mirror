@@ -14,6 +14,11 @@ del docker_test['services']['bitcoind']['build']
 docker_test['services']['bitcoind']['image'] = "exo1/dev-test-bitcoind"
 docker_test['services']['bitcoind']['entrypoint'] = "sh -c 'btc_init && bitcoind -regtest'"
 
+docker_test['services']['producer']['entrypoint'] = "sh -c 'git pull && ./producer-test.sh'"
+
+docker_test['services']['sut']['env_file'].append("env_test.env")
+docker_test['services']['producer']['env_file'].append("env_test.env")
+
 with open(docker_test_filename, 'w') as f:
     yaml.dump(docker_test, f)
 print("Edited docker-compose.test.yml successfully")

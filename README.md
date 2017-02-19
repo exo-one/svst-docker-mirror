@@ -8,6 +8,9 @@ You will need a new version of `docker-compose` and `docker`.
 
 Run `1_auditor.sh` from this directory. (For a producer run `1_producer.sh`)
 
+If you get stuck try running `2_refresh_all.sh` which will redownload
+all base images and rebuild all containers.
+
 ## Base Images
 
 There are some base images
@@ -38,17 +41,20 @@ These are all started through the `docker-compose.yaml` files
 
 ## Volumes
 
-We use volumes to make the docker images able to be used through all stages of the apps lifetime. All _state_ should be stored in these folders, essentially.
+We use volumes to make the docker images able to be used through all stages of the apps lifetime. All _state_ should be
+stored in these folders, essentially.
 
 * `bitcoind` uses `./bitcoind-data` to store `.bitcoin/` including configuration files and the main blockchain
 * `ipfs` uses `./ipfs-data` to store _all_ downloaded pallets and headers (except invalid ones)
-  * keep in mind, all IPFS chunks are stored here and the other services only download them via the API temporarily to verify / process them.
+  * keep in mind, all IPFS chunks are stored here and the other services only download them via the API temporarily to
+  verify / process them.
   * TODO: the haskell verifier might not actually do that. Not sure if we need to create a cludge or not
 * `postgres` uses `./postgres-data` to store the DB files
 
 ## Development
 
-Ideally you shouldn't need to touch `dev-base-1` or `dev-base-haskell`. For convenience the apt cache is left in, so if you need any extra dependencies you can just add `apt-get install -y whatever` to the front of the particular docker file.
+Ideally you shouldn't need to touch `dev-base-1` or `dev-base-haskell`. For convenience the apt cache is left in, so if
+you need any extra dependencies you can just add `apt-get install -y whatever` to the front of the particular docker file.
 
 ### Building Individual Images
 
@@ -69,3 +75,14 @@ ie: rebuilding scraper:
 Testing done through `docker-compose`'s testing framework.
 
 See `.gitlab-ci.yml` for latest testing entrypoint and setup (in `run-tests`)
+
+You can run tests manually with `_run_tests.sh`
+
+If you need to rebuild all containers for CI run `_reset_tests.sh` - e.g. if you alter svst-haskell and need to re-compile
+
+Use these scripts for various testing features:
+
+* `_reset_tests.sh` - rebuild all test containers
+* `_rebuild_ci_container.sh` - rebuild a single container (useful for testing a single container quickly)
+* `_debug_btc` - run bitcoin-cli commands quickly
+* `_cleanup_tests.sh` - stops all containers from CI

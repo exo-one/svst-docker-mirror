@@ -20,7 +20,8 @@ cat <<EOF >> $TESTFILE
     build:
       context: .
       dockerfile: Dockerfile.test
-    env_file: env_vars.env
+    env_file:
+      - env_vars.env
 EOF
 
 python3 ./bin/2_modify_docker_test.py
