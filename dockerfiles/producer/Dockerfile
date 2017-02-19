@@ -14,4 +14,4 @@ RUN git clone https://gitlab.com/exo-one/svst-python.git --depth=1
 
 WORKDIR /src/svst-python
 
-RUN pip3 install -r requirements.txt
+RUN apt-get install -y python3-pip && pip3 install -r requirements.txt
