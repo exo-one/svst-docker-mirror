@@ -1,5 +1,8 @@
 image: docker:latest
 
+cache:
+  untracked: true
+
 variables:
   DOCKER_DRIVER: overlay
 
@@ -45,3 +48,5 @@ compose-run-tests:
     - env
     - ./_reset_tests.sh
     - ./_run_test.sh
+  tags:
+    - docker
