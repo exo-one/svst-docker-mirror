@@ -40,7 +40,7 @@ services:
   sut:
     build: {context: ., dockerfile: Dockerfile.test}
     depends_on: [bitcoind, postgres, scraper, state-maker]
-    env_file: [env_vars.env, env_test.env, env_test.env]
+    env_file: [env_vars.env, env_test.env]
   vote-explorer:
     build: {context: ./dockerfiles/vote-explorer/, dockerfile: Dockerfile}
     depends_on: [state-maker]

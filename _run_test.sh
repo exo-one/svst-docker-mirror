@@ -2,6 +2,8 @@
 
 set -e
 
+echo "STARTING TESTS"
+
 function get_sut_container_id {
     docker ps | grep "ci_sut" | cut -d ' ' -f 1
 }
