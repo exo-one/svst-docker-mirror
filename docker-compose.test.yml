@@ -3,13 +3,13 @@
 services:
   bitcoind:
     entrypoint: sh -c 'ip a && btc_init && bitcoind -regtest'
-    env_file: [env_vars.env]
+    env_file: [env_vars.env, env_test.env]
     expose: ['8332']
     image: exo1/dev-test-bitcoind
   header-download:
     build: {context: ./dockerfiles/header-download/, dockerfile: Dockerfile}
     depends_on: [scraper]
-    env_file: [env_vars.env]
+    env_file: [env_vars.env, env_test.env]
   ipfs:
     depends_on: [bitcoind]
     image: jbenet/go-ipfs
@@ -23,12 +23,12 @@ services:
   postgres:
     build: {context: ./dockerfiles/postgres/}
     depends_on: [ipfs]
-    env_file: [env_vars.env]
+    env_file: [env_vars.env, env_test.env]
   producer:
     build: {context: ./dockerfiles/producer/, dockerfile: Dockerfile}
     depends_on: [scraper]
     entrypoint: sh -c 'git pull && ./producer-test.sh'
-    env_file: [env_vars.env]
+    env_file: [env_vars.env, env_test.env]
     environment: [VERIFY_SECRET_KEY, VERIFY_PUBKEY]
   scraper:
     build: {context: ./dockerfiles/scraper/, dockerfile: Dockerfile}
@@ -40,7 +40,7 @@ services:
   sut:
     build: {context: ., dockerfile: Dockerfile.test}
     depends_on: [bitcoind, postgres, scraper, state-maker]
-    env_file: [env_vars.env, env_test.env]
+    env_file: [env_vars.env, env_test.env, env_test.env]
   vote-explorer:
     build: {context: ./dockerfiles/vote-explorer/, dockerfile: Dockerfile}
     depends_on: [state-maker]
