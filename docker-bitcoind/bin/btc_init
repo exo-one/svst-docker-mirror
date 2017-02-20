@@ -15,13 +15,24 @@ disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
 rpcuser=${RPCUSER:-bitcoinrpc}
 rpcpassword=${RPCPASSWORD:-`dd if=/dev/urandom bs=33 count=1 2>/dev/null | base64`}
-rpcallowip=172.18.0.0/16
+rpcallowip=172.16.0.0/12
 rpcport=8332
 port=8333
+txindex=1
+server=1
+dbcache=2048
 EOF
 
 fi
 
+echo "Bitcoin environment variables:"
+env
+echo
+echo "Bitcoin IP info"
+ip a
+echo
+echo "Bitcoin bitcoin.conf"
 cat $HOME/.bitcoin/bitcoin.conf
 
-echo "Initialization completed successfully"
+echo
+echo "Bitcoin Initialization completed successfully"

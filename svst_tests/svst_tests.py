@@ -64,6 +64,7 @@ def run_query(sql_query):
     return list(rows)
 
 
+
 last_scrape_n = 0
 def do_test_round():
     global last_scrape_n
