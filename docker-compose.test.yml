@@ -2,14 +2,14 @@
 
 services:
   bitcoind:
-    entrypoint: sh -c 'btc_init && bitcoind -regtest'
+    entrypoint: sh -c 'ip a && btc_init && bitcoind -regtest'
     env_file: [env_vars.env]
     expose: ['8332']
     image: exo1/dev-test-bitcoind
   header-download:
     build: {context: ./dockerfiles/header-download/, dockerfile: Dockerfile}
     depends_on: [scraper]
-    env_file: [env_vars.env, env_test.env]
+    env_file: [env_vars.env]
   ipfs:
     depends_on: [bitcoind]
     image: jbenet/go-ipfs
@@ -28,7 +28,7 @@ services:
     build: {context: ./dockerfiles/producer/, dockerfile: Dockerfile}
     depends_on: [scraper]
     entrypoint: sh -c 'git pull && ./producer-test.sh'
-    env_file: [env_vars.env, env_test.env]
+    env_file: [env_vars.env]
     environment: [VERIFY_SECRET_KEY, VERIFY_PUBKEY]
   scraper:
     build: {context: ./dockerfiles/scraper/, dockerfile: Dockerfile}
@@ -44,5 +44,5 @@ services:
   vote-explorer:
     build: {context: ./dockerfiles/vote-explorer/, dockerfile: Dockerfile}
     depends_on: [state-maker]
-    ports: ['127.0.0.1:8080:80']
+    ports: ['127.0.0.1:8683:80']
 version: '2.1'

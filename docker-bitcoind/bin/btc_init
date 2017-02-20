@@ -29,7 +29,7 @@ echo "Bitcoin environment variables:"
 env
 echo
 echo "Bitcoin IP info"
-ifconfig -a
+ip a
 echo
 echo "Bitcoin bitcoin.conf"
 cat $HOME/.bitcoin/bitcoin.conf
