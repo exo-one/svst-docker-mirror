@@ -66,6 +66,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - env_vars.env
+    entrypoint: "python3 ./header-download.py"
 
   pallet-download:  # python
     depends_on:
