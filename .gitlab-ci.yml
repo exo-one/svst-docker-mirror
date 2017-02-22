@@ -10,7 +10,7 @@ services:
   - docker:dind
 
 before_script:
-  - apk add --update python py-pip python-dev python3 bash &&
+  - apk add --update python py-pip python-dev python3 bash git &&
       pip install docker-compose &&
       pip3 install PyYAML
   - docker info
@@ -47,8 +47,7 @@ compose-run-tests:
   stage: run-tests
   script:
     - env
-    - ls
-    - bash _git_clone_all.sh
+    - ./_git_clone_all.sh
     - ./_reset_tests.sh
     - ./_run_test.sh
   tags:
