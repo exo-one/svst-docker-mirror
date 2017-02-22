@@ -46,6 +46,7 @@ compose-run-tests:
   stage: run-tests
   script:
     - env
+    - ./_git_clone_all.sh
     - ./_reset_tests.sh
     - ./_run_test.sh
   tags:
