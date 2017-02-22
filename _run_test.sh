@@ -2,6 +2,9 @@
 
 set -e
 
+echo "REGENERATING DOCKER TEST"
+./bin/regen-docker-test.sh
+
 echo "CLEANING UP AFTER PREVIOUS TESTS"
 ./_cleanup_tests.sh
 
@@ -14,7 +17,6 @@ function get_sut_container_id {
 export VERIFY_SECRET_KEY=1234567890123456789012345678901234567890123456789012345678901234
 export VERIFY_PUBKEY=c9df7bcba2238bedcc681e8b17bb21c1625d21d285b70c20cf53fdd473db9dfb
 
-./bin/regen-docker-test.sh
 docker-compose -f docker-compose.test.yml -p ci build --no-cache sut
 docker-compose -f docker-compose.test.yml -p ci up --build &  # don't use -d for tests so we get all logs
 

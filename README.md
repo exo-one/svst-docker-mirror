@@ -6,14 +6,37 @@ You will need a new version of `docker-compose` and `docker`.
 
 ## I just want to run it!
 
-Run `1_auditor.sh` from this directory. (For a producer run `1_producer.sh`)
+Run `1_auditor.sh` from this directory.
 
 If you get stuck try running `2_refresh_all.sh` which will redownload
 all base images and rebuild all containers.
 
+### How do _you_ run it?
+
+We (at Exo1) will run it using `1_producer.sh` - part of this involves providing the secret key used to sign headers.
+Headers are only signed during the stress test as an anti-DoS measure, Secure.Vote itself will not use signed headers
+(this would introduce a central authority).
+
+## Codebase Organisation
+
+The intended structure _for the 6 repositories_ is:
+
+```
+└── svst-docker
+    ├── bitcoin-nulldata
+    ├── stress-test-pallet-verification
+    ├── svst-docs
+    ├── svst-haskell
+    └── svst-python
+```
+
+This allows the docker setup to copy the local files into Dockerfiles.
+
+After cloning `svst-docker` you can use `_git_clone_all.sh` and `_git_pull_all.sh` for their respective git funcitons.
+
 ## Base Images
 
-There are some base images
+There are some base images we build other containers from. The main benefit is a common setup and caching.
 
 * `dev-base-1` - this is the general base image, meant to include as many dev resources as possible
 * `dev-base-haskell` - this is the base image for Haskell utils, based on dev-base-1. It has an out of date version of `svst-haskell`, however, stack has been upgraded and most libraries have cached prebuilt versions, so it's much faster to build on top of (rather than recompiling the same files over and over)
@@ -25,11 +48,14 @@ There are some base images
 In the `dockerfiles` subdirectory there are a number of folders with corresponding docker files.
 These are responsible for building and running each individual service.
 
+There are also a number of dockerfiles in the main directory.
+
 Our microservices are:
 
 * `bitcoind` (Bitcoin-Nulldata)
 * `ipfs` (decentralised content network)
 * `postgres` (database, for data-base-y things)
+* `producer` (for producing nulldata, headers, and pallets)
 * `scraper` (for scraping nulldata)
 * `header-download` (for downloading and verifying pallet headers)
 * `pallet-download` (for downloading pallets from verified headers)
@@ -69,6 +95,9 @@ use the existing cached image as well as which image needs rebuilding:
 ie: rebuilding scraper:
 
     % docker-compose build --no-cache scraper
+
+You can use `_rebuild_ci_container.sh` if you'd like to rebuild on for the testing framework.
+Alternatively you can also run `_reset_tests.sh`
 
 ### Testing
 

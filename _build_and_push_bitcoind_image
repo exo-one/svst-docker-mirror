@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd docker-bitcoind
-docker build --no-cache . -t exo1/dev-test-bitcoind:latest && docker push exo1/dev-test-bitcoind:latest
-cd ..

@@ -41,16 +41,16 @@ services:
     depends_on:
       - "postgres"
     build:
-      context: ./dockerfiles/scraper/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.scraper
     entrypoint: "scraper"
 
   producer:  # haskell & python
     depends_on:
       - "scraper"
     build:
-      context: ./dockerfiles/producer/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.producer
     entrypoint: "sh -c './producer-production.sh'"
     env_file:
       - env_vars.env
@@ -62,8 +62,8 @@ services:
     depends_on:
       - "scraper"
     build:
-      context: ./dockerfiles/header-download/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.header-download
     env_file:
       - env_vars.env
     entrypoint: "python3 ./header-download.py"
@@ -72,28 +72,28 @@ services:
     depends_on:
       - "scraper"
     build:
-      context: ./dockerfiles/pallet-download/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.pallet-download
 
   pallet-verifier:  # haskell
     depends_on:
       - "scraper"
     build:
-      context: ./dockerfiles/pallet-verifier/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.pallet-verifier
 
   state-maker:  # python
     depends_on:
       - "scraper"
     build:
-      context: ./dockerfiles/state-maker/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.state-maker
 
   vote-explorer:  # python
     depends_on:
       - "state-maker"
     build:
-      context: ./dockerfiles/vote-explorer/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.vote-explorer
     ports:
       - "127.0.0.1:8683:80"
