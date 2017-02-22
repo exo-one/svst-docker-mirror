@@ -43,7 +43,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.scraper
-    entrypoint: "scraper"
+    entrypoint: "./scraper.py"
+    env_file:
+      - env_vars.env
 
   producer:  # haskell & python
     depends_on:
@@ -74,6 +76,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.pallet-download
+    env_file:
+      - env_vars.env
 
   pallet-verifier:  # haskell
     depends_on:
@@ -81,6 +85,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.pallet-verifier
+    env_file:
+      - env_vars.env
 
   state-maker:  # python
     depends_on:
@@ -88,6 +94,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.state-maker
+    env_file:
+      - env_vars.env
 
   vote-explorer:  # python
     depends_on:
@@ -95,5 +103,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.vote-explorer
+    env_file:
+      - env_vars.env
     ports:
       - "127.0.0.1:8683:80"

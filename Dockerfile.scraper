@@ -1,9 +1,7 @@
-FROM exo1/dev-base-haskell:latest
+FROM exo1/dev-base-python:latest
 
 # Add stuff after this so we have a common image
 
-ADD ./svst-haskell /src/svst-haskell
-WORKDIR /src/svst-haskell
+ADD ./svst-python/*.py /src/svst-python/
 
-RUN stack build
-RUN stack install && mv ~/.local/bin/* /usr/bin/
+WORKDIR /src/svst-python

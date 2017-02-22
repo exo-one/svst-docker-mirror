@@ -18,9 +18,11 @@ services:
   pallet-download:
     build: {context: ., dockerfile: Dockerfile.pallet-download}
     depends_on: [scraper]
+    env_file: [env_vars.env, env_test.env]
   pallet-verifier:
     build: {context: ., dockerfile: Dockerfile.pallet-verifier}
     depends_on: [scraper]
+    env_file: [env_vars.env, env_test.env]
   postgres:
     build: {context: ./dockerfiles/postgres/}
     depends_on: [ipfs]
@@ -34,10 +36,12 @@ services:
   scraper:
     build: {context: ., dockerfile: Dockerfile.scraper}
     depends_on: [postgres]
-    entrypoint: scraper
+    entrypoint: ./scraper.py
+    env_file: [env_vars.env, env_test.env]
   state-maker:
     build: {context: ., dockerfile: Dockerfile.state-maker}
     depends_on: [scraper]
+    env_file: [env_vars.env, env_test.env]
   sut:
     build: {context: ., dockerfile: Dockerfile.test}
     depends_on: [bitcoind, postgres, scraper, state-maker]
@@ -45,5 +49,6 @@ services:
   vote-explorer:
     build: {context: ., dockerfile: Dockerfile.vote-explorer}
     depends_on: [state-maker]
+    env_file: [env_vars.env, env_test.env]
     ports: ['127.0.0.1:8683:80']
 version: '2.1'
