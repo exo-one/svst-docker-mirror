@@ -12,6 +12,7 @@ for repo in ${repos[@]}; do
   if [[ -e $1 ]]; then
     cd "$repo"
     git checkout "$1"
+    echo "Checking out $1"
     cd ..
   fi
 done
