@@ -17,14 +17,13 @@ function get_sut_container_id {
 export VERIFY_SECRET_KEY=1234567890123456789012345678901234567890123456789012345678901234
 export VERIFY_PUBKEY=c9df7bcba2238bedcc681e8b17bb21c1625d21d285b70c20cf53fdd473db9dfb
 
-docker-compose -f docker-compose.test.yml -p ci build --no-cache sut
-
-containers=(header-download pallet-download producer scraper)
+containers=(sut header-download pallet-download producer scraper)
 for container in ${containers[@]}; do
     ./_rebuild_ci_container.sh $container &
 done
 wait
 
+# note: above we build all the containers we care about in parallel, then we exclude the --build param below
 docker-compose -f docker-compose.test.yml -p ci up &  # don't use -d for tests so we get all logs
 
 until [[ ! -z $(get_sut_container_id) ]]; do

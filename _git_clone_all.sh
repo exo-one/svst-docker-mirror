@@ -9,4 +9,9 @@ fi
 
 for repo in ${repos[@]}; do
   git clone "$gitroot/$repo"
+  if [[ -e $1 ]]; then
+    cd "$repo"
+    git checkout "$1"
+    cd ..
+  fi
 done
