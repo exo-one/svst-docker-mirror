@@ -7,12 +7,9 @@ if [[ -e $SVST_DEV ]]; then
   gitroot="git@gitlab.com:exo-one"
 fi
 
+currentbranch=$(git branch | grep '\*' | cut -d ' ' -f 2)
+
 for repo in ${repos[@]}; do
   git clone "$gitroot/$repo"
-  if [[ -e $1 ]]; then
-    cd "$repo"
-    git checkout "$1"
-    echo "Checking out $1"
-    cd ..
-  fi
+  git checkout "$currentbranch"
 done
