@@ -14,7 +14,7 @@ del docker_test['services']['bitcoind']['build']
 docker_test['services']['bitcoind']['image'] = "exo1/dev-test-bitcoind"
 docker_test['services']['bitcoind']['entrypoint'] = "sh -c 'ip a && btc_init && bitcoind -regtest'"
 
-docker_test['services']['producer']['entrypoint'] = "sh -c 'git pull && ./producer-test.sh'"
+docker_test['services']['producer']['entrypoint'] = "sh -c './producer-test.sh'"
 
 for service in docker_test['services']:
     if 'env_file' in docker_test['services'][service]:

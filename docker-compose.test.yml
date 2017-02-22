@@ -28,7 +28,7 @@ services:
   producer:
     build: {context: ., dockerfile: Dockerfile.producer}
     depends_on: [scraper]
-    entrypoint: sh -c 'git pull && ./producer-test.sh'
+    entrypoint: sh -c './producer-test.sh'
     env_file: [env_vars.env, env_test.env]
     environment: [VERIFY_SECRET_KEY, VERIFY_PUBKEY]
   scraper:
