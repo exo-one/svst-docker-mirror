@@ -3,13 +3,13 @@
 source ./_git_repos.sh
 
 gitroot="https://gitlab.com/exo-one"
-if [[ -e $SVST_DEV ]]; then
+if [[ -n "$SVST_DEV" ]]; then
   gitroot="git@gitlab.com:exo-one"
 fi
 
 for repo in ${repos[@]}; do
   git clone "$gitroot/$repo"
-  if [[ -e "$CI_BUILD_REF_NAME" ]]; then
+  if [[ -n "$CI_BUILD_REF_NAME" ]]; then
     cd "$repo"
     echo "Checking out $CI_BUILD_REF_NAME based on env variable CI_BUILD_REF_NAME"
     echo "THIS IS NOT GUARENTEED TO BE THE SAME BRANCH!!! AND MAY FAIL IN FUTURE"
