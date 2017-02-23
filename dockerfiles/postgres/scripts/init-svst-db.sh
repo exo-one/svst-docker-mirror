@@ -33,9 +33,9 @@ CREATE TABLE pallet
 CREATE TABLE block_data
     ( id SERIAL PRIMARY KEY
     , block_hash bytea NOT NULL
+    , previous_block_hash bytea NOT NULL
     , block_height integer NOT NULL
-    , blocktime integer NOT NULL
-    , previousblockhash bytea NOT NULL
+    , block_time integer NOT NULL
     );
 
 -- If it has been processed, it will appear in this table, otherwise we can
