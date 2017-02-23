@@ -7,9 +7,13 @@ if [[ -e $SVST_DEV ]]; then
   gitroot="git@gitlab.com:exo-one"
 fi
 
-currentbranch=$(git branch | grep '\*' | cut -d ' ' -f 2)
-
 for repo in ${repos[@]}; do
   git clone "$gitroot/$repo"
-  git checkout "$currentbranch"
+  if [[ -e ]]; then
+    cd "$repo"
+    echo "Checking out $CI_BUILD_REF_NAME based on env variable CI_BUILD_REF_NAME"
+    echo "THIS IS NOT GUARENTEED TO BE THE SAME BRANCH!!! AND MAY FAIL IN FUTURE"
+    git checkout "$CI_BUILD_REF_NAME"
+    cd ..
+  fi
 done
