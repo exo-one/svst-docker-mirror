@@ -1,8 +1,8 @@
 FROM exo1/dev-base-python:latest
 
-ADD svst_tests /svst_tests
+ADD ./svst-python /src/svst-python
 
-WORKDIR /svst_tests
+WORKDIR /src/svst-python
 
 ENTRYPOINT python3 svst_tests.py
 CMD python3 svst_tests.py

@@ -1,0 +1,4 @@
+FROM exo1/dev-base-haskell:latest
+
+#ADD ./svst-haskell /src/svst-haskell
+#ADD ./svst-python /src/svst-python
