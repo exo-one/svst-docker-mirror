@@ -8,7 +8,5 @@ if [[ -e $SVST_DEV ]]; then
 fi
 
 for repo in ${repos[@]}; do
-  cd "$repo"
-  git pull
-  cd ..
+  cd "$repo" && git pull && cd ..
 done
